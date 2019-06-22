@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -31,6 +32,10 @@ public class UIManager : MonoBehaviour
     public GameObject createBoardScreenUI;
     public GameObject createBoardSeeMoreScreenUI;
 
+    public GameObject createBoardButtonPrefab;
+    public GridLayoutGroup createBoardGridLayout;
+    public InputField boardTitleInputField;
+
     
     /********************* CHANGE IMAGE AND COLOR TO CREATE BOARD SCREEN UI **********************/
     [Header("BG Images and Colors for Board BG", order = 5)]
@@ -39,6 +44,7 @@ public class UIManager : MonoBehaviour
     public Button bGSelectionImageBtn2;
     public Button bGSelectionImageBtn3;
     public Button bGSelectionImageBtn4;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -139,6 +145,25 @@ public class UIManager : MonoBehaviour
         
         createBoardScreenUI.SetActive(false);
         
+    }
+
+    public void CreateNewBoard()
+    {
+        
+        GameObject createNewBoardBtn = Instantiate(createBoardButtonPrefab);
+        createNewBoardBtn.transform.SetParent(createBoardGridLayout.transform);
+        createNewBoardBtn.GetComponent<Button>().onClick.AddListener(OnClick);
+        createNewBoardBtn.transform.GetChild(0).GetComponent<Text>().text = boardTitleInputField.text;
+        createNewBoardBtn.transform.GetComponent<Image>().sprite = bGSelectionImageBtn1.image.sprite;
+        
+        
+
+        createBoardScreenUI.SetActive(false);
+    }
+    
+    void OnClick()
+    {
+        Debug.Log("test");
     }
 /***************END- OPEN CREATE BOARD SCREEN UI SCREENS*****************/
 
