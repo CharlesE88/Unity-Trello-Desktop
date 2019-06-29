@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class UIManager : MonoBehaviour
 {
@@ -36,6 +37,10 @@ public class UIManager : MonoBehaviour
     public GridLayoutGroup createBoardGridLayout;
     public InputField boardTitleInputField;
 
+
+    private GameObject[] boards;
+    
+
     
     /********************* CHANGE IMAGE AND COLOR TO CREATE BOARD SCREEN UI **********************/
     [Header("BG Images and Colors for Board BG", order = 5)]
@@ -44,6 +49,19 @@ public class UIManager : MonoBehaviour
     public Button bGSelectionImageBtn2;
     public Button bGSelectionImageBtn3;
     public Button bGSelectionImageBtn4;
+
+    private int MaxBoards = 6;
+    private int currentBoard;
+    private string boardName;
+    private Sprite boardImage;
+    
+    
+    /********************* Selected Board SCREEN UI **********************/
+    [Header("Selected Board Screen UI", order = 5)]
+    public GameObject selectedBoardScreenUI;
+
+    /**************************************************************/
+    
     
     
     // Start is called before the first frame update
@@ -147,24 +165,24 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void CreateNewBoard()
+    private void OnClick(string newBoardName, int num, GameObject selectedBoard, Sprite img)
     {
-        
-        GameObject createNewBoardBtn = Instantiate(createBoardButtonPrefab);
-        createNewBoardBtn.transform.SetParent(createBoardGridLayout.transform);
-        createNewBoardBtn.GetComponent<Button>().onClick.AddListener(OnClick);
-        createNewBoardBtn.transform.GetChild(0).GetComponent<Text>().text = boardTitleInputField.text;
-        createNewBoardBtn.transform.GetComponent<Image>().sprite = bGSelectionImageBtn1.image.sprite;
-        
-        
-
-        createBoardScreenUI.SetActive(false);
+        Debug.Log(selectedBoard.transform.GetSiblingIndex() + " " + selectedBoard.transform.GetChild(0).GetComponent<Text>().text);
+        //Delete Board Code
+        //Destroy(selectedBoard);
     }
     
-    void OnClick()
+    public void CreateNewBoard()
     {
-        Debug.Log("test");
+        GameObject createNewBoardBtn = Instantiate(createBoardButtonPrefab);
+        createNewBoardBtn.transform.SetParent(createBoardGridLayout.transform);
+        currentBoard = createBoardGridLayout.transform.childCount - 1;
+        createNewBoardBtn.GetComponent<Button>().onClick.AddListener(() => OnClick(boardName, currentBoard, createNewBoardBtn, boardImage));
+        boardName = createNewBoardBtn.transform.GetChild(0).GetComponent<Text>().text = boardTitleInputField.text;
+        boardImage = createNewBoardBtn.transform.GetComponent<Image>().sprite = bGSelectionImageBtn1.image.sprite;
+        createBoardScreenUI.SetActive(false);
     }
+
 /***************END- OPEN CREATE BOARD SCREEN UI SCREENS*****************/
 
 /***************************************************************************/
